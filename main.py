@@ -76,5 +76,8 @@ if response.status_code == 200:
 else:
     print(f"Failed to fetch sitemap: {response.status_code}")
 
+# Define the path to the temporary .env file
+temp_env_path = ".env.temp"
+
 # Cleanup: Remove the temporary service account file
 os.remove(temp_env_path)

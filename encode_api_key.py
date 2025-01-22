@@ -1,20 +1,21 @@
 import json
 import os
 
-# Original JSON data
-service_account_data = 'api_key.json'
+# Path to your actual API key JSON file
+service_account_file = 'api_key.json'
 
-# Converting the JSON to the required format
+# Open the JSON file and load its content
+with open(service_account_file, 'r') as f:
+    service_account_data = json.load(f)
+
+# Converting the JSON to a string and escaping necessary characters
 service_account_str = json.dumps(service_account_data).replace('"', '\\"')
 
 # Forming the final string
 final_string = f'SERVICE_ACCOUNT_KEY_JSON="{service_account_str}"'
 
-# Replace this with your actual encoded service account key
-SERVICE_ACCOUNT_KEY_JSON = final_string
-
 # Define the .env content
-env_content = f"SERVICE_ACCOUNT_KEY_JSON={SERVICE_ACCOUNT_KEY_JSON}"
+env_content = f"SERVICE_ACCOUNT_KEY_JSON={final_string}"
 
 # Path to the temporary .env file
 temp_env_path = ".env.temp"
