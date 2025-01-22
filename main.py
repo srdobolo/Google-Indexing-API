@@ -77,4 +77,4 @@ else:
     print(f"Failed to fetch sitemap: {response.status_code}")
 
 # Cleanup: Remove the temporary service account file
-os.remove(SERVICE_ACCOUNT_FILE)
+os.remove(temp_env_path)
