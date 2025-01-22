@@ -5,14 +5,15 @@ from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 import json
 import logging
+import os
 
 # Setup logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 # Constants
 SCOPES = ['https://www.googleapis.com/auth/indexing', 'https://www.googleapis.com/auth/webmasters']
-SERVICE_ACCOUNT_FILE = "api_key.json"  # Replace with your JSON key path
-SITEMAP_URL = "https://www.smart-recruitments.com/sitemap.xml"
+SERVICE_ACCOUNT_FILE = os.getenv("GOOGLE_SERVICE_ACCOUNT_FILE", "api_key.json")
+SITEMAP_URL = os.getenv("SITEMAP_URL", "https://www.smart-recruitments.com/sitemap.xml")
 INDEXING_API_ENDPOINT = "https://indexing.googleapis.com/v3/urlNotifications:publish"
 
 # Authenticate with Google API
