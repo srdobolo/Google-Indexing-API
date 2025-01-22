@@ -1,7 +1,13 @@
-import base64
+import json
 
-# Replace 'api_key.json' with the path to your JSON file
-with open('api_key.json', 'rb') as f:
-    encoded_key = base64.b64encode(f.read()).decode()
+# Original JSON data
+service_account_data = 'api_key.json'
 
-print(f"Encoded API key:\n{encoded_key}")
+# Converting the JSON to the required format
+service_account_str = json.dumps(service_account_data).replace('"', '\\"')
+
+# Forming the final string
+final_string = f'SERVICE_ACCOUNT_KEY_JSON="{service_account_str}"'
+
+# Output the result
+print(final_string)
