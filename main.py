@@ -7,6 +7,8 @@ import os
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import time
+from dotenv import load_dotenv
+load_dotenv()
 
 # Setup logging to both console and file
 logging.basicConfig(
@@ -20,8 +22,8 @@ logging.basicConfig(
 
 # Constants
 SCOPES = ['https://www.googleapis.com/auth/indexing', 'https://www.googleapis.com/auth/webmasters']
-SERVICE_ACCOUNT_FILE = os.getenv("GOOGLE_SERVICE_ACCOUNT_FILE", "api_key.json")
-SITEMAP_URL = os.getenv("SITEMAP_URL", "https://www.smart-recruitments.com/sitemap.xml")
+SERVICE_ACCOUNT_FILE = os.getenv("GOOGLE_SERVICE_ACCOUNT_FILE")
+SITEMAP_URL = os.getenv("SITEMAP_URL")
 INDEXING_API_ENDPOINT = "https://indexing.googleapis.com/v3/urlNotifications:publish"
 
 # Authenticate with Google API
