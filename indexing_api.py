@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 
 # Step 3: Load API Key from Environment Variables
 load_dotenv()  # Load environment variables from a .env file
-SERVICE_ACCOUNT_KEY_JSON = os.getenv('SERVICE_ACCOUNT_KEY_JSON')
+SERVICE_ACCOUNT_KEY_JSON = os.getenv('API_KEY_BASE64')
 
 if not SERVICE_ACCOUNT_KEY_JSON:
     raise ValueError("The SERVICE_ACCOUNT_KEY_JSON environment variable is not set.")
