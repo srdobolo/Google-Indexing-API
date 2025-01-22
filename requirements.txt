@@ -117,7 +117,7 @@ sortedcontainers==2.4.0
 soupsieve==2.4.1
 statsmodels==0.13.5
 storage3==0.3.6
-streamlit==1.23.1
+streamlit==1.37.0
 StrEnum==0.4.15
 supabase==0.7.1
 supafunc==0.2.2
