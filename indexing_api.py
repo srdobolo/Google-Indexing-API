@@ -12,7 +12,7 @@ load_dotenv()  # Load environment variables from a .env file
 SERVICE_ACCOUNT_KEY_JSON = os.getenv('API_KEY_BASE64')
 
 if not SERVICE_ACCOUNT_KEY_JSON:
-    raise ValueError("The SERVICE_ACCOUNT_KEY_JSON environment variable is not set.")
+    raise ValueError("The API_KEY_BASE64 environment variable is not set.")
 
 # Write the API key to a temporary file
 SERVICE_ACCOUNT_FILE = "temp_service_account.json"
