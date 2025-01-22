@@ -49,8 +49,9 @@ def authenticate_with_google():
         SERVICE_ACCOUNT_FILE, scopes=SCOPES
     )
     if not credentials.valid:
-        credentials.refresh(Request())
-    return retry_request(credentials.refresh, Request)
+        request = Request()
+        credentials.refresh(request)  # Correct usage of refresh
+    return credentials
 
 # Notify Google about a URL
 def notify_google(session, credentials, url, action):
