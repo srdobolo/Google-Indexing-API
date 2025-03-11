@@ -22,7 +22,7 @@ logging.basicConfig(
 )
 
 # Constants
-SCOPES = ['https://www.googleapis.com/auth/indexing', 'https://www.googleapis.com/auth/webmasters']
+SCOPES = ['https://www.googleapis.com/auth/indexing']
 SERVICE_ACCOUNT_FILE = os.getenv("GOOGLE_SERVICE_ACCOUNT_FILE")
 SITEMAP_URL = os.getenv("SITEMAP_URL")
 INDEXING_API_ENDPOINT = "https://indexing.googleapis.com/v3/urlNotifications:publish"
