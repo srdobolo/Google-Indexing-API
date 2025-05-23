@@ -87,7 +87,7 @@ def process_urls(urls, credentials):
                 future.result()  # This will raise any exceptions caught in notify_google
             except Exception as e:
                 logging.error(f"Error processing {url}: {e}")
-
+ 
 # Main function
 def main():
     try:
