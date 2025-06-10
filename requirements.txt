@@ -101,7 +101,7 @@ pywin32-ctypes==0.2.2
 pyzmq==25.1.2
 readme-renderer==37.3
 realtime==0.0.5
-requests==2.31.0
+requests==2.32.4
 requests-oauthlib==2.0.0
 requests-toolbelt==1.0.0
 rfc3986==1.5.0
