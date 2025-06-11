@@ -141,5 +141,5 @@ webencodings==0.5.1
 websockets==10.4
 Werkzeug==2.2.3
 wsproto==1.2.0
-zipp==3.15.0
+zipp==3.19.1
 zope.interface==6.1
