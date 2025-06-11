@@ -96,8 +96,6 @@ python-gitlab==3.15.0
 python-semantic-release==7.32.1
 pytz==2023.3.post1
 pytz-deprecation-shim==0.1.0.post0
-pywin32==306
-pywin32-ctypes==0.2.2
 pyzmq==25.1.2
 readme-renderer==37.3
 realtime==0.0.5
