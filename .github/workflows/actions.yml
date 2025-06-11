@@ -28,5 +28,3 @@ jobs:
 
     - name: Run script
       run: python main.py
-      env:
-        API_ACCESS_KEY: ${{ secrets.API_ACCESS_KEY }}
