@@ -7,6 +7,7 @@ import os
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import time
+import tempfile
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -23,13 +24,13 @@ logging.basicConfig(
 
 # Constants
 SCOPES = ['https://www.googleapis.com/auth/indexing']
-SERVICE_ACCOUNT_FILE = os.getenv("GOOGLE_SERVICE_ACCOUNT_FILE")
+GOOGLE_CREDENTIALS_JSON = os.getenv("GOOGLE_CREDENTIALS_JSON")
 SITEMAP_URL = os.getenv("SITEMAP_URL")
 INDEXING_API_ENDPOINT = "https://indexing.googleapis.com/v3/urlNotifications:publish"
 
 # Validate environment variables
-if not SERVICE_ACCOUNT_FILE or not SITEMAP_URL:
-    logging.error("Missing environment variables: GOOGLE_SERVICE_ACCOUNT_FILE or SITEMAP_URL")
+if not GOOGLE_CREDENTIALS_JSON or not SITEMAP_URL:
+    logging.error("Missing environment variables: GOOGLE_CREDENTIALS_JSON or SITEMAP_URL")
     sys.exit(1)
 
 # Retry function to handle retries in both authenticate and notify functions
@@ -43,21 +44,29 @@ def retry_request(func, *args, retries=3, delay=2, **kwargs):
     logging.error(f"Failed after {retries} attempts.")
     raise Exception(f"Function {func.__name__} failed after {retries} attempts.")
 
-# Authenticate with Google API
+# Authenticate with Google API using credentials written to a temp file
 def authenticate_with_google():
-    credentials = service_account.Credentials.from_service_account_file(
-        SERVICE_ACCOUNT_FILE, scopes=SCOPES
-    )
-    if not credentials.valid:
-        request = Request()
-        credentials.refresh(request)  # Correct usage of refresh
-    return credentials
+    try:
+        # Write the raw JSON string to a temporary file
+        with tempfile.NamedTemporaryFile(mode="w+", suffix=".json", delete=False) as temp_file:
+            temp_file.write(GOOGLE_CREDENTIALS_JSON)
+            temp_file.flush()
+            credentials = service_account.Credentials.from_service_account_file(
+                temp_file.name, scopes=SCOPES
+            )
+        if not credentials.valid:
+            request = Request()
+            credentials.refresh(request)
+        return credentials
+    except Exception as e:
+        logging.error(f"Authentication failed: {e}")
+        raise
 
 # Notify Google about a URL
 def notify_google(session, credentials, url, action):
     body = {"url": url, "type": action}
     headers = {"Authorization": f"Bearer {credentials.token}", "Content-Type": "application/json"}
-    
+
     try:
         response = session.post(INDEXING_API_ENDPOINT, json=body, headers=headers, timeout=10)
         response.raise_for_status()
@@ -77,18 +86,19 @@ def fetch_sitemap_urls(sitemap_url):
         logging.error(f"Failed to fetch sitemap: {e}")
         return []
 
+# Notify all URLs from sitemap
 def process_urls(urls, credentials):
-    session = requests.Session()  # Use a single session for multiple requests
+    session = requests.Session()  # Reuse one session
     with ThreadPoolExecutor(max_workers=10) as executor:
         futures = {executor.submit(notify_google, session, credentials, url, "URL_UPDATED"): url for url in urls}
         for future in as_completed(futures):
             url = futures[future]
             try:
-                future.result()  # This will raise any exceptions caught in notify_google
+                future.result()
             except Exception as e:
                 logging.error(f"Error processing {url}: {e}")
- 
-# Main function
+
+# Main execution
 def main():
     try:
         credentials = authenticate_with_google()
