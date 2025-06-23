@@ -29,5 +29,5 @@ jobs:
     - name: Run script
       run: python main.py
       env: 
-        GOOGLE_SERVICE_ACCOUNT_FILE: 'api_key.json'
+        GOOGLE_SERVICE_ACCOUNT_FILE: ${{ secrets.API_ACCESS_KEY }}
         SITEMAP_URL: 'https://www.recruityard.com/sitemap.xml'
